@@ -1,0 +1,195 @@
+
+nari.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+images/arm2_sec
+  rotate: false
+  xy: 955, 686
+  size: 64, 127
+  orig: 64, 127
+  offset: 0, 0
+  index: -1
+images/arm_2_main
+  rotate: true
+  xy: 548, 391
+  size: 76, 140
+  orig: 76, 149
+  offset: 0, 9
+  index: -1
+images/arm_main
+  rotate: true
+  xy: 269, 375
+  size: 85, 163
+  orig: 85, 164
+  offset: 0, 1
+  index: -1
+images/body
+  rotate: false
+  xy: 688, 618
+  size: 151, 194
+  orig: 158, 202
+  offset: 2, 0
+  index: -1
+images/body_bei
+  rotate: false
+  xy: 494, 814
+  size: 157, 208
+  orig: 162, 208
+  offset: 4, 0
+  index: -1
+images/dun_b
+  rotate: false
+  xy: 2, 124
+  size: 51, 223
+  orig: 51, 223
+  offset: 0, 0
+  index: -1
+images/hand_main
+  rotate: true
+  xy: 55, 131
+  size: 52, 68
+  orig: 52, 69
+  offset: 0, 1
+  index: -1
+images/hand_sec
+  rotate: true
+  xy: 955, 631
+  size: 53, 58
+  orig: 53, 58
+  offset: 0, 0
+  index: -1
+images/head
+  rotate: false
+  xy: 310, 277
+  size: 77, 96
+  orig: 81, 96
+  offset: 4, 0
+  index: -1
+images/head_bei
+  rotate: false
+  xy: 224, 263
+  size: 84, 98
+  orig: 88, 99
+  offset: 0, 1
+  index: -1
+images/leg2_front
+  rotate: false
+  xy: 841, 635
+  size: 112, 178
+  orig: 113, 178
+  offset: 1, 0
+  index: -1
+images/leg2_side
+  rotate: true
+  xy: 535, 469
+  size: 133, 144
+  orig: 133, 146
+  offset: 0, 0
+  index: -1
+images/leg_main
+  rotate: false
+  xy: 653, 814
+  size: 151, 208
+  orig: 151, 208
+  offset: 0, 0
+  index: -1
+images/leg_sec
+  rotate: false
+  xy: 535, 604
+  size: 151, 208
+  orig: 151, 208
+  offset: 0, 0
+  index: -1
+images/nari
+  rotate: false
+  xy: 2, 349
+  size: 87, 673
+  orig: 88, 673
+  offset: 0, 0
+  index: -1
+images/nari-atk_2_1
+  rotate: true
+  xy: 269, 462
+  size: 336, 264
+  orig: 350, 274
+  offset: 14, 0
+  index: -1
+images/nari-def_damage_1
+  rotate: false
+  xy: 311, 210
+  size: 70, 65
+  orig: 70, 81
+  offset: 0, 0
+  index: -1
+images/neck
+  rotate: false
+  xy: 224, 204
+  size: 85, 57
+  orig: 85, 57
+  offset: 0, 0
+  index: -1
+images/neck_item_behind
+  rotate: false
+  xy: 548, 328
+  size: 104, 61
+  orig: 104, 62
+  offset: 0, 0
+  index: -1
+images/pifeng
+  rotate: false
+  xy: 806, 930
+  size: 216, 92
+  orig: 216, 93
+  offset: 0, 0
+  index: -1
+images/pifeng_behind
+  rotate: false
+  xy: 91, 800
+  size: 401, 222
+  orig: 402, 222
+  offset: 1, 0
+  index: -1
+images/pifeng_bei
+  rotate: false
+  xy: 806, 815
+  size: 206, 113
+  orig: 206, 113
+  offset: 0, 0
+  index: -1
+images/shild
+  rotate: false
+  xy: 91, 363
+  size: 176, 435
+  orig: 176, 435
+  offset: 0, 0
+  index: -1
+images/skirt_main
+  rotate: false
+  xy: 434, 344
+  size: 112, 116
+  orig: 113, 117
+  offset: 0, 1
+  index: -1
+images/skirt_sec
+  rotate: false
+  xy: 2, 2
+  size: 122, 120
+  orig: 122, 120
+  offset: 0, 0
+  index: -1
+images/yaodai_behind
+  rotate: true
+  xy: 137, 201
+  size: 160, 85
+  orig: 160, 85
+  offset: 0, 0
+  index: -1
+images/yaodai_front
+  rotate: true
+  xy: 55, 185
+  size: 162, 80
+  orig: 162, 80
+  offset: 0, 0
+  index: -1
