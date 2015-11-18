@@ -237,7 +237,7 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
         {
             case 0:
                 pc.m_animator.SetFloat("MoveRate", Mathf.Abs(Player.instance.moveDragRate));
-                if (rate > 0.4f && pc.curMoveRate <= 0.4f) pc.moveToRun = 1;
+                if (rate > 0.4f) pc.moveToRun = 1;
                 else if (rate < 0.4f && pc.curMoveRate >= 0.4f) pc.moveToRun = -1;
                 break;
             case 1:
@@ -246,7 +246,7 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
                 break;
             case -1:
                 pc.m_animator.SetFloat("MoveRate", Mathf.Lerp(pc.curMoveRate, rate, 5 * Time.deltaTime));
-                if (rate > 0.4f && pc.curMoveRate <= 0.4f) pc.moveToRun = 1;
+                if (rate > 0.4f) pc.moveToRun = 1;
                 else if (rate < 0.01f) pc.moveToRun = 0;
                 break;
         }
