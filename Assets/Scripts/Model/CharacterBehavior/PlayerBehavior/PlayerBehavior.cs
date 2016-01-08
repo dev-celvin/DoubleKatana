@@ -1,23 +1,20 @@
 ﻿using KGCustom.Controller;
 using KGCustom.Model;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, new()
 {
-    public  AnimationCurve animCurve = null;
-    protected float startTime;
     protected void attackBegin(PlayerController pc)
     {
         startTime = Time.time;
         if (startTime == PlayerAttack.instance.chagneComboTime) pc.m_animator.SetBool("IsOver", true);
         else PlayerAttack.instance.chagneComboTime = -1;
         GameObject atkEffect = (GameObject)GameObject.Instantiate(pc.m_AttackEffect, pc.transform.position, pc.m_AttackEffect.transform.rotation);
-        atkEffect.GetComponent<PlayerAttackEffectController>().release(pc, pc.curState);
-        atkEffect.GetComponent<PlayerAttackEffectController>().m_Owner = pc.transform;
-        if (Player.instance.curState is Skill7)atkEffect.transform.parent = pc.transform.parent;
-        else atkEffect.transform.parent = pc.transform;
+        atkEffect.GetComponent<AttackEffectUtility>().m_AttackEffectController.release(pc, pc.character.m_skills.getBySkillName(pc.curState));
+        //if (Player.instance.curState is Skill7)atkEffect.transform.parent = pc.transform.parent;
+        //else atkEffect.transform.parent = pc.transform;
+        atkEffect.transform.parent = pc.transform.parent;
         pc.m_animator.SetInteger("AttackAction", 0);
         pc.m_animator.SetInteger("SkillAction", 0);
         PlayerAttack.instance.combo = false;
@@ -38,7 +35,7 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
             }
 
             else {
-                if (!releaseSkillCount(sIndex % 100)) {
+                if (!releaseSkillCount(pc, sIndex % 100)) {
                     pc.m_animator.SetBool("IsOver", true);
                     return;
                 }
@@ -60,7 +57,7 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
             }
 
             else {
-                if (!releaseSkillCount(sIndex % 100)) {
+                if (!releaseSkillCount(pc, sIndex % 100)) {
                     pc.m_animator.SetBool("IsOver", true);
                     return;
                 }
@@ -124,7 +121,7 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
             if (sIndex < 100)
                 pc.m_animator.SetInteger("AttackAction", sIndex);
             else {
-                if (!releaseSkillCount(sIndex % 100)) {
+                if (!releaseSkillCount(pc,sIndex % 100)) {
                     return;
                 }
                 pc.m_animator.SetInteger("SkillAction", sIndex % 100);
@@ -141,7 +138,7 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
             if (sIndex < 100)
                 pc.m_animator.SetInteger("AttackAction", sIndex);
             else {
-                if (!releaseSkillCount(sIndex % 100)) {
+                if (!releaseSkillCount(pc, sIndex % 100)) {
                     return;
                 }
                 pc.m_animator.SetInteger("SkillAction", sIndex % 100);
@@ -195,7 +192,7 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
     {
         if (animCurve != null) pc.transform.Translate(Time.deltaTime * (Player.instance.xDirection * animCurve.Evaluate(Time.time - startTime) * xTransfer * Vector2.right));
         else pc.transform.Translate(Time.deltaTime * (Player.instance.xDirection * xTransfer * Vector2.right));
-        pc.transform.parent.position -= pc.transform.parent.position.y * Vector3.up;
+        //pc.transform.parent.position -= pc.transform.parent.position.y * Vector3.up;
     }
 
     public override void begin(KGCharacterController pc)
@@ -226,11 +223,11 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
 
     protected void moveableExecute(PlayerController pc)
     {
-        pc.curMoveRate = pc.m_animator.GetFloat("MoveRate");
 #if UNITY_STANDALONE_WIN
         Player.instance.moveDragRate = Input.GetAxis("Horizontal");
         pc.m_animator.SetFloat("MoveRate", Mathf.Abs(Player.instance.moveDragRate));
 #else
+        pc.curMoveRate = pc.m_animator.GetFloat("MoveRate");
         Player.instance.moveDragRate = KeyManager.instance.GetMoveDis();
         float rate = Mathf.Abs(Player.instance.moveDragRate);
         switch (pc.moveToRun)
@@ -265,35 +262,23 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
         }
     }
 
-    protected void attackableExecute(PlayerController pc) {
+    protected bool attackableExecute(PlayerController pc) {
 #if UNITY_STANDALONE_WIN
         if (Input.GetKeyDown(KeyCode.K))
         {
             pc.m_animator.SetBool("JumpAttack", true);
             PlayerAttack.instance.combo = true;
+            return true;
         }
 #else
 				if (KeyManager.instance.GetKeyMessage(KeyManager.KeyCode.Attack))
                 {
                     pc.m_animator.SetBool("JumpAttack", true);
-            PlayerAttack.instance.combo = true;
+                    PlayerAttack.instance.combo = true;
+                    return true;
                 }
 #endif
-    }
-
-    protected void fallingExecute(PlayerController pc) {
-        if (pc.transform.parent.position.y <= 0.01f)
-        {
-            pc.rigid2D.velocity = Vector2.zero;
-            pc.transform.parent.position -= pc.transform.parent.position.y * Vector3.up;
-            pc.m_animator.SetBool("IsGround", true);
-        }
-        else
-        {
-            float rate = pc.getCurStateInfo().normalizedTime;
-            pc.rigid2D.velocity = Vector2.down * yTransfer * rate;
-            pc.m_animator.SetBool("IsGround", false);
-        }
+        return false;
     }
 
     protected void skillExecute(PlayerController pc) {
@@ -338,15 +323,18 @@ public class PlayerBehavior<T> : CharacterBehavior where T : PlayerBehavior<T>, 
         }
     }
 
-    bool releaseSkillCount(int index) {
+    bool releaseSkillCount(PlayerController pc, int index) {
         string skillName = "skill_" + Convert.ToString(index);
-        float skillCost = PlayerAttackEffectController.getSkillCost(skillName);
-        if (Player.instance.mp >= skillCost && PlayerAttackEffectController.getSkillReadyTime(skillName) == 0) {
-            Player.instance.mp -= skillCost;
-            PlayerAttackEffectController.cdReverse(skillName);
+        AttackEffect ae = pc.character.m_skills.getBySkillName(skillName);
+        if (Player.instance.mp >= ae.costMP && ae.getSkillReadyTime() == 0) {
+            Player.instance.mp -= ae.costMP;
+            ae.CDReset();
             return true;
         }
         return false;
+    }
+
+    protected void attackEnd(KGCharacterController cc) {
     }
 
 }

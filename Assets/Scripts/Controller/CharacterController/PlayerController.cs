@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using KGCustom.Model;
+using System.Collections;
 
 namespace KGCustom.Controller {
     public class PlayerController : KGCharacterController
     {
+        public static PlayerController instance;
 
         public GameObject m_AttackEffect;        //主角的攻击和技能特效
+        public Transform checkGround;
+        public Transform rootPos;
         public Animator m_animator;            //动画机
         public SkeletonGhost skeletonGhost;            //Ghosting
         public AudioSource audioSource;                //音源
@@ -24,7 +28,12 @@ namespace KGCustom.Controller {
          };
 
         void Awake() {
-            PlayerAttackEffectController.init();
+            instance = this;
+        }
+
+        void Start() {
+            character = Player.instance;
+            StartCoroutine("CheckGround");
         }
 
         public AnimatorStateInfo getCurStateInfo()
@@ -49,8 +58,7 @@ namespace KGCustom.Controller {
                 changeState();
             }
             if (Player.instance.curState != null)
-                if (!m_animator.GetBool("Damage"))
-                    Player.instance.curState.execute(this);
+               Player.instance.curState.execute(this);
         }
 
 
@@ -200,10 +208,28 @@ namespace KGCustom.Controller {
             transform.localScale = new Vector3(-direction, 1, 1);
             Player.instance.xDirection = (int)-direction;
             GameObject atkEffect = (GameObject)Instantiate(m_AttackEffect, transform.position, m_AttackEffect.transform.rotation);
-            atkEffect.GetComponent<PlayerAttackEffectController>().release(this, "fan");
+            atkEffect.GetComponent<PlayerAttackEffectController>().release(this, character.m_skills.getBySkillName("fan"));
             atkEffect.transform.parent = transform;
             m_animator.SetTrigger("FanSuccess");
         }
+
+        //检测着地
+        public IEnumerator CheckGround() {
+            while (true) {
+                if (Physics2D.Linecast(rootPos.position, checkGround.position, 1 << LayerMask.NameToLayer("Ground")))
+                {
+                    m_animator.SetBool("IsGround", true);
+                }
+                else {
+                    m_animator.SetBool("IsGround", false);
+                    if (rigid2D.velocity.y < 0 && !m_animator.GetBool("Damage"))
+                        m_animator.Play("jump_falling");
+                }
+                yield return 0;
+            }
+        }
+
+
 
         //-------------- Animation Event（动画事件）
         public void MoveStart(float speed)

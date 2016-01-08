@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+[System.Serializable]
 public class AttackEffect
 {
 
@@ -10,12 +11,11 @@ public class AttackEffect
     public float timeScale { get; set; }
     public float costMP { get; set; }
     public float lastUsedTime { get; set; }
-
     public float cd { get; set; }
     
+    
 
-
-    public AttackEffect(string name, float damageValue, float damageRange, float nRange, float pRange, float costMP = 10, float cd = 1.0f,  float timeScale = 1.0f)
+    public AttackEffect(string name, float damageValue, float damageRange, float nRange, float pRange, float costMP = 10, float cd = 1.0f,  float timeScale = 1.0f )
     {
         this.name = name;
         this.damageValue = damageValue;
@@ -32,6 +32,20 @@ public class AttackEffect
         return damageValue + Random.Range(-damageRange, damageRange);
     }
 
+    public float getSkillReadyTime()
+    {
+        return (Time.time - lastUsedTime < cd && lastUsedTime != 0) ? (cd + lastUsedTime - Time.time) : 0;
+    }
 
+    public bool IsAvailable() {
+        if(Time.time - lastUsedTime < cd && lastUsedTime != 0)
+        return false;
+        return true;
+    }
+
+    public void CDReset()
+    {
+        lastUsedTime = Time.time;
+    }
 
 }

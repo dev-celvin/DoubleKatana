@@ -37,7 +37,7 @@ namespace KGCustom.Model {
             normalAction = new List<int>();
             skillAction = new List<int>();
             setNormalQueue(new int[]{1, 2, 3, 4 });
-            setSkillQueue(new int[] { 101, 102, 103, 104, 105, 106, 107, 108 });
+            setSkillQueue(new int[] { 107, 102, 103, 104, 105, 106, 107, 108 });
         }
 
         public void setSkillQueue(int[] queue)

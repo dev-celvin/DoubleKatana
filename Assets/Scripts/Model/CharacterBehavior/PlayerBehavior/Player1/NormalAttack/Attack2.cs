@@ -15,6 +15,9 @@ namespace KGCustom.Model {
             normaAttackExecute((PlayerController)cc);
             base.execute((PlayerController)cc);
         }
-
+        public override void end(KGCharacterController cc)
+        {
+            attackEnd(cc);
+        }
     }
 }

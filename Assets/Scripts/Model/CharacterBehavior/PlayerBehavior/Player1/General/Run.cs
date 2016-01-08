@@ -39,7 +39,7 @@ namespace KGCustom.Model {
                             }
 #endif
             pc.transform.Translate(Player.instance.moveDragRate * xTransfer * Time.deltaTime * Vector3.right);
-            pc.transform.parent.position -= pc.transform.parent.position.y * Vector3.up;
+            //pc.transform.parent.position -= pc.transform.parent.position.y * Vector3.up;
         }
 
         public override void begin(KGCharacterController cc)

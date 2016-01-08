@@ -7,33 +7,33 @@ namespace KGCustom.Controller.CharacterController.EnemyController
     public class GunGirlController : KGEnemyController {
 
         void Awake() {
-            m_Character = new GunGirl();
-            m_Character.xDirection = Player.instance.xDirection;
-            transform.localScale = new Vector3(m_Character.xDirection, 1, 1);
-            m_Character.curState = g_behavior;
+            character = new GunGirl();
+            character.xDirection = Player.instance.xDirection;
+            transform.localScale = new Vector3(character.xDirection, 1, 1);
+            character.curState = null;
         }
         void Update() {
-            if (m_Character.curState != null) m_Character.curState.execute(this);
+            if (character.curState != null) character.curState.execute(this);
         }
 
         public override void hitAttackHandle()
         {
             Model.Attack atk = hitAttacks.Pop();
-            m_Character.hp -= atk.m_AttackEffect.getDamageValue();
+            character.hp -= atk.m_AttackEffect.getDamageValue();
             transform.localScale = new Vector3(atk.direction, 1, 1);
-            m_Character.xDirection = (int)atk.direction;
+            character.xDirection = (int)atk.direction;
             GameObject hiteffect = (GameObject)Instantiate(HitEffect, atk.hitPos, HitEffect.transform.rotation);
             hiteffect.GetComponent<HitEffect>().PlayHitEffect(3);
-            if (m_Character.hp <= 0)
+            if (character.hp <= 0)
             {
                 m_SkeletonAnim.loop = false;
                 m_SkeletonAnim.AnimationName = "die";
-                m_Character.curState = null;
+                character.curState = null;
                 return;
             }
             else {
                 m_SkeletonAnim.state.SetAnimation(0, "damage_1", false);
-                m_Character.curState = d_behavior;
+                character.curState = null;
             }
             if (hitAttacks.Count != 0) hitAttackHandle();
         }

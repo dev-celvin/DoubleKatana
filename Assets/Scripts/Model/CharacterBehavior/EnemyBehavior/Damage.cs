@@ -14,8 +14,8 @@ namespace KGCustom.Model.Behavior.EnemyBehavior {
             }
             else {
                 if (ec.m_SkeletonAnim.state.GetCurrent(0).time >= ec.m_SkeletonAnim.state.GetCurrent(0).endTime) {
-                    ec.m_Character.curState = ec.g_behavior;
-                    ec.g_behavior.begin(cc);
+                    //ec.character.curState = ec.g_behavior;
+                    //ec.g_behavior.begin(cc);
                 }
             }
         }

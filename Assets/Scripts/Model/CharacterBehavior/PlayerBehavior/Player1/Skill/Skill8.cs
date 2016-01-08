@@ -16,4 +16,8 @@ public class Skill8 : PlayerBehavior<Skill8>
     {
         xTransfer = 10;
     }
+    public override void end(KGCharacterController cc)
+    {
+        attackEnd(cc);
+    }
 }

@@ -17,4 +17,8 @@ public class Skill6 : PlayerBehavior<Skill6>
         skillExecute((PlayerController)cc);
         base.execute(cc);
     }
+    public override void end(KGCharacterController cc)
+    {
+        attackEnd(cc);
+    }
 }

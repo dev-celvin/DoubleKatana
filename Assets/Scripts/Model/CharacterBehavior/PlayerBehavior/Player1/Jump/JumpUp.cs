@@ -7,17 +7,20 @@ namespace KGCustom.Model {
 
         public override void init()
         {
-            xTransfer = 5;
-            yTransfer = 14;
+            xTransfer = 3;
+            yTransfer = 15;
         }
 
         public override void begin(KGCharacterController cc)
         {
-            xTransfer = 5 * Player.instance.moveDragRate;
+            PlayerController pc = (PlayerController)cc;
+            xTransfer = 3 * Player.instance.moveDragRate;
             JumpFlying.instance.xTransfer = xTransfer;
             JumpAtk4.instance.xTransfer = xTransfer;
             JumpFalling.instance.xTransfer = xTransfer;
-            //pc.rigid2D.AddForce(yTransfer * Vector2.up);
+            JumpFalling.instance.canMove = false;
+            pc.StopCoroutine("CheckGround");
+            
         }
 
         public override void execute(KGCharacterController cc)
@@ -38,6 +41,7 @@ namespace KGCustom.Model {
         {
             PlayerController pc = (PlayerController)cc;
             pc.rigid2D.velocity = Vector2.zero;
+            pc.StartCoroutine("CheckGround");
         }
 
     }

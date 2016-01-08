@@ -17,7 +17,7 @@ public class Shift : PlayerBehavior<Shift>
         PlayerController pc = (PlayerController)cc;
         if (pc.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.5f)
             pc.transform.Translate(-Player.instance.xDirection * xTransfer * Time.deltaTime * Vector3.right);
-        pc.transform.parent.position -= pc.transform.parent.position.y * Vector3.up;
+        //pc.transform.parent.position -= pc.transform.parent.position.y * Vector3.up;
     }
 
     public override void begin(KGCharacterController cc)

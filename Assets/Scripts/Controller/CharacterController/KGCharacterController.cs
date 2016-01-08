@@ -8,6 +8,11 @@ namespace KGCustom.Controller {
     {
         public GameObject HitEffect;
         public Stack<Attack> hitAttacks = new Stack<Attack>();
+        public Character character;
+        public Pool attackEffectPool;
+        protected bool initFinished = false;
+
+        protected virtual void init() { }
     }
 
 }

@@ -8,7 +8,7 @@ namespace KGCustom.Controller {
         public KGCharacterController characterController;
         void OnCollisionEnter2D(Collision2D collision2d)
         {
-            Attack hitAttack = collision2d.gameObject.GetComponent<AttackInfo>().getHitAttack();
+            Attack hitAttack = collision2d.gameObject.GetComponent<AttackEffectController>().m_curAttack;
             if (!characterController.hitAttacks.Contains(hitAttack))
             {
                 hitAttack.hitPos = collision2d.contacts[0].point;

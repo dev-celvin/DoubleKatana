@@ -19,5 +19,9 @@ namespace KGCustom.Model {
             skillExecute((PlayerController)cc);
             base.execute((PlayerController)cc);
         }
+        public override void end(KGCharacterController cc)
+        {
+            attackEnd(cc);
+        }
     }
 }
